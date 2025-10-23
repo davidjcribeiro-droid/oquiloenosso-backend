@@ -215,6 +215,29 @@ app.put('/api/jurados/:id', async (req, res) => {
   }
 })
 
+app.delete('/api/jurados/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    await SupabaseService.deleteJurado(id)
+    
+    // Emitir atualização via WebSocket
+    io.emit('jurado_deleted', { id })
+    io.emit('jurados_updated', await SupabaseService.getJurados())
+    
+    res.json({
+      success: true,
+      message: 'Jurado excluído com sucesso'
+    })
+  } catch (error) {
+    console.error('Erro ao excluir jurado:', error)
+    res.status(500).json({
+      success: false,
+      error: 'Erro ao excluir jurado',
+      message: error.message
+    })
+  }
+})
+
 // ===== ROTAS DE AVALIAÇÕES =====
 app.get('/api/avaliacoes', async (req, res) => {
   try {

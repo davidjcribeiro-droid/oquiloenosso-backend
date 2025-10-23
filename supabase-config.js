@@ -115,6 +115,16 @@ export class SupabaseService {
     return data[0]
   }
 
+  static async deleteJurado(id) {
+    const { error } = await supabase
+      .from(TABLES.JURADOS)
+      .delete()
+      .eq('id', id)
+    
+    if (error) throw error
+    return true
+  }
+
   // ===== AVALIAÇÕES =====
   static async getAvaliacoes() {
     const { data, error } = await supabase
