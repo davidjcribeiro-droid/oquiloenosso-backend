@@ -52,3 +52,4 @@ temp/
 # Build outputs
 dist/
 build/
+.vercel
